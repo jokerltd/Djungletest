@@ -1,0 +1,24 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: djungletest
+      POSTGRES_USER: jester
+      POSTGRES_PASSWORD: jester
+
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8100
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    ports:
+      - "8100:8100"
+
+volumes:
+  postgres_data:
